@@ -1,3 +1,5 @@
+#-*- coding: utf-8 -*-
+
 import os
 from datetime import datetime
 import time
@@ -7,16 +9,11 @@ from donkey import Donkey
 from model import Model
 from evaluator import Evaluator
 
-tf.app.flags.DEFINE_string('data_dir', './data', 'Directory to read TFRecords files')
-tf.app.flags.DEFINE_string('train_logdir', './logs/train', 'Directory to write training logs')
-tf.app.flags.DEFINE_string('restore_checkpoint', None,
-                           'Path to restore checkpoint (without postfix), e.g. ./logs/train/model.ckpt-100')
-tf.app.flags.DEFINE_integer('batch_size', 32, 'Default 32')
-tf.app.flags.DEFINE_float('learning_rate', 1e-2, 'Default 1e-2')
-tf.app.flags.DEFINE_integer('patience', 100, 'Default 100, set -1 to train infinitely')
-tf.app.flags.DEFINE_integer('decay_steps', 10000, 'Default 10000')
-tf.app.flags.DEFINE_float('decay_rate', 0.9, 'Default 0.9')
-FLAGS = tf.app.flags.FLAGS
+import sys
+import argparse
+
+
+
 
 
 def _train(path_to_train_tfrecords_file, num_train_examples, path_to_val_tfrecords_file, num_val_examples,
@@ -106,28 +103,54 @@ def _train(path_to_train_tfrecords_file, num_train_examples, path_to_val_tfrecor
             print 'Finished'
 
 
-def main(_):
-    path_to_train_tfrecords_file = os.path.join(FLAGS.data_dir, 'train.tfrecords')
-    path_to_val_tfrecords_file = os.path.join(FLAGS.data_dir, 'val.tfrecords')
-    path_to_tfrecords_meta_file = os.path.join(FLAGS.data_dir, 'meta.json')
-    path_to_train_log_dir = FLAGS.train_logdir
-    path_to_restore_checkpoint_file = FLAGS.restore_checkpoint
+def main_train(_):
+
+    parser = argparse.ArgumentParser(description="Training Routine for SVHNClassifier")
+    parser.add_argument("--data_dir", required=True, help="Path to SVHN (format 1) folders")
+    parser.add_argument("--path_to_train_log_dir", required=True, help="Directory to write training logs")
+    parser.add_argument("--path_to_restore_checkpoint_file", required=False, help="Path to restore checkpoint (without postfix), e.g. ./logs/train/model.ckpt-100")
+    parser.add_argument("--path_to_train_tfrecords_file", required=True, help="Tfrecords file in train directory")
+    parser.add_argument("--path_to_val_tfrecords_file", required=True, help="Tfrecords file in val directory")
+    parser.add_argument("--path_to_tfrecords_meta_file", required=True, help="Meta file in directory")
+
+    parser.add_argument("--batch_size", type=int, required=True, help="Default 32")
+    parser.add_argument("--learning_rate", type=float, required=True, help="Default 1e-2")
+    parser.add_argument("--patience", type=int, required=True, help="Default 100, set -1 to train infinitely")
+    parser.add_argument("--decay_steps", type=int, required=True, help="Default 10000")
+    parser.add_argument("--decay_rate", type=float, required=True, help="Default 0.9")
+    args = parser.parse_args()
+
+
+
     training_options = {
-        'batch_size': FLAGS.batch_size,
-        'learning_rate': FLAGS.learning_rate,
-        'patience': FLAGS.patience,
-        'decay_steps': FLAGS.decay_steps,
-        'decay_rate': FLAGS.decay_rate
+        'batch_size': args.batch_size,
+        'learning_rate': args.learning_rate,
+        'patience': args.patience,
+        'decay_steps': args.decay_steps,
+        'decay_rate': args.decay_rate
     }
 
     meta = Meta()
-    meta.load(path_to_tfrecords_meta_file)
+    meta.load(args.path_to_tfrecords_meta_file)
 
-    _train(path_to_train_tfrecords_file, meta.num_train_examples,
-           path_to_val_tfrecords_file, meta.num_val_examples,
-           path_to_train_log_dir, path_to_restore_checkpoint_file,
+    _train(args.path_to_train_tfrecords_file, meta.num_train_examples,
+           args.path_to_val_tfrecords_file, meta.num_val_examples,
+           args.path_to_train_log_dir, args.path_to_restore_checkpoint_file,
            training_options)
 
 
 if __name__ == '__main__':
-    tf.app.run(main=main)
+
+    if len(sys.argv) == 1:
+
+        # 재 학습시 --path_to_train_log_dir => ./logs/train2
+        #         --path_to_restore_checkpoint_file => ./logs/train/latest.ckpt 로 변경하여 학습 진행
+
+        sys.argv.extend(["--data_dir",  "./data",                                           "--path_to_train_log_dir", "./logs/train",
+                         "--path_to_restore_checkpoint_file", None,                         "--path_to_train_tfrecords_file", "./data/train.tfrecords",
+                         "--path_to_val_tfrecords_file", "./data/val.tfrecords",            "--path_to_tfrecords_meta_file", "./data/meta.json",
+                         "--batch_size", "32",                                              "--learning_rate", "1e-2",
+                         "--patience", "100",                                               "--decay_steps", "10000",
+                         "--decay_rate", "0.9"])
+
+    tf.app.run(main=main_train)
