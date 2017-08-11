@@ -39,8 +39,7 @@
 3. Directory Tree Structure
     ```
     SVHNClassifier
-    ----------------------------------------------------------------------------------------------       
-        - data (Downloaded data file)
+        - data
             - extra
                 - 1.png 
                 - 2.png
@@ -56,29 +55,7 @@
                 - 2.png
                 - ...
                 - digitStruct.mat
-    ----------------------------------------------------------------------------------------------           
     ```
-1234123412341234
-1234123421341234
 
-3-2.        
-            - user_train (User add images to directory)
-                - 1.png 
-                - 2.png
-                - ...
-                - user_train.csv    
-        - logs (Generated through training)
-            - eval
-                - ...
-            - train
-                - checkpoint
-                - latest.ckpt.data...
-                - latest.ckpt.index
-                - latest.ckpt.meta
-                - ...
-            - train2
-                - ...
-            - ...
-    
-    
 
+## Usage
