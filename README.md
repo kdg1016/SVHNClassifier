@@ -56,13 +56,15 @@
                 - 2.png
                 - ...
                 - digitStruct.mat
-    
+    ----------------------------------------------------------------------------------------------       
+        ```
+        
+        ```
             - user_train (User add images to directory)
                 - 1.png 
                 - 2.png
                 - ...
-                - user_train.csv
-    ```
+                - user_train.csv    
         - logs (Generated through training)
             - eval
                 - ...
@@ -75,6 +77,7 @@
             - train2
                 - ...
             - ...         
+        ```
     
     
 
