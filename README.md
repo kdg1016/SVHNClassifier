@@ -60,7 +60,6 @@
     ```
 1234123412341234
 1234123421341234
-1234123412341234
 
 3-2.        
             - user_train (User add images to directory)
