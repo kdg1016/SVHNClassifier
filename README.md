@@ -39,29 +39,61 @@
 3. Directory Tree Structure
     ```
     SVHNClassifier
-        - data
-            - extra
-                - 1.png 
-                - 2.png
-                - ...
-                - digitStruct.mat
-            - test
-                - 1.png 
-                - 2.png
-                - ...
-                - digitStruct.mat
-            - train
-                - 1.png 
-                - 2.png
-                - ...
-                - digitStruct.mat
-            - user_train
-                - 1.png 
-                - 2.png
-                - ...
-                - user_train.csv
-        - Data_Collect_GUI.py
-        - HoonUtils.py
+    │
+    ├── convert_to_tfrecords.py
+    ├── donkey.py
+    ├── eval.py
+    ├── evaluator.py
+    ├── inference.py
+    ├── meta.py
+    ├── model.py
+    ├── train.py
+    │
+    ├── test_images
+    │   │	.jpg
+    │   └── ...
+    │
+    ├── data
+    │   ├── Data_Collect_GUI.py
+    │   ├── HoonUtils.py
+    │   ├── meta.json (Generated through tfrecords converting)
+    │   ├── train.tfrecords (Generated through tfrecords converting)
+    │   ├── val.tfrecords (Generated through tfrecords converting)
+    │   ├── test.tfrecords (Generated through tfrecords converting)
+    │   │
+    │   ├── extra (Downloaded image directory)
+    │   │   ├── 1.png
+    │   │   ├── 2.png
+    │   │   ├── 3.png
+    │   │   ├── ...
+    │   │   ├── digitStruct.mat
+    │   │   └── see_bboxes.m
+    │   ├── test (Downloaded image directory)
+    │   │   ├── 1.png
+    │   │   ├── 2.png
+    │   │   ├── 3.png
+    │   │   ├── ...
+    │   │   ├── digitStruct.mat
+    │   │   └── see_bboxes.m
+    │   ├── train (Downloaded image directory)
+    │   │   ├── 1.png
+    │   │   ├── 2.png
+    │   │   ├── 3.png
+    │   │   ├── ...
+    │   │   ├── digitStruct.mat
+    │   │   ├── readme.txt
+    │   │   └── see_bboxes.m
+    │   └── user_train (User image directory)
+    │       ├── 1.png
+    │       ├── 2.png
+    │       ├── 3.png
+    │       ├── ...
+    │       ├── see_bboxes.m
+    │       └── user_train.csv
+    ├── logs (Generated through training)
+    │   ├── eval
+    │   ├── train
+    │   └── ...
     ```
 
 
