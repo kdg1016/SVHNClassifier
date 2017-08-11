@@ -55,6 +55,13 @@
                 - 2.png
                 - ...
                 - digitStruct.mat
+            - user_train
+                - 1.png 
+                - 2.png
+                - ...
+                - user_train.csv
+        - Data_Collect_GUI.py
+        - HoonUtils.py
     ```
 
 
