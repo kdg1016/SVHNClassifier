@@ -1,17 +1,21 @@
 import tensorflow as tf
 from model import Model
-
-tf.app.flags.DEFINE_string('image', None, 'Path to image file')
-tf.app.flags.DEFINE_string('restore_checkpoint', None,
-                           'Path to restore checkpoint (without postfix), e.g. ./logs/train/model.ckpt-100')
-FLAGS = tf.app.flags.FLAGS
+import sys
+import argparse
 
 
-def main(_):
-    path_to_image_file = FLAGS.image
-    path_to_restore_checkpoint_file = FLAGS.restore_checkpoint
 
-    image = tf.image.decode_jpeg(tf.read_file(path_to_image_file), channels=3)
+
+def main_inference(_):
+
+
+    parser = argparse.ArgumentParser(description="Image Inference Routine for SVHNClassifier")
+    parser.add_argument("--path_to_image_file", required=True, help="Path to image file")
+    parser.add_argument("--path_to_restore_checkpoint_file", required=True, help="Path to restore checkpoint (without postfix), e.g. ./logs/train/model.ckpt-100")
+    args = parser.parse_args()
+
+
+    image = tf.image.decode_jpeg(tf.read_file(args.path_to_image_file), channels=3)
     image = tf.reshape(image, [64, 64, 3])
     image = tf.image.convert_image_dtype(image, dtype=tf.float32)
     image = tf.multiply(tf.subtract(image, 0.5), 2)
@@ -25,7 +29,7 @@ def main(_):
 
     with tf.Session() as sess:
         restorer = tf.train.Saver()
-        restorer.restore(sess, path_to_restore_checkpoint_file)
+        restorer.restore(sess, args.path_to_restore_checkpoint_file)
 
         length_predictions_val, digits_predictions_string_val = sess.run([length_predictions, digits_predictions_string])
         length_prediction_val = length_predictions_val[0]
@@ -35,4 +39,9 @@ def main(_):
 
 
 if __name__ == '__main__':
-    tf.app.run(main=main)
+
+    if len(sys.argv) == 1:
+
+        sys.argv.extend(["--path_to_image_file", 'images/test1.jpg', "--path_to_restore_checkpoint_file", './logs/train/latest.ckpt'])
+
+    tf.app.run(main=main_inference)
