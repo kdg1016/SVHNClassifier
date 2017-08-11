@@ -56,7 +56,7 @@
                 - 2.png
                 - ...
                 - digitStruct.mat
-    ----------------------------------------------------------------------------------------------       
+    
             - user_train (User add images to directory)
                 - 1.png 
                 - 2.png
