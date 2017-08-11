@@ -62,6 +62,7 @@
                 - 2.png
                 - ...
                 - user_train.csv
+    ```
         - logs (Generated through training)
             - eval
                 - ...
@@ -74,6 +75,6 @@
             - train2
                 - ...
             - ...         
-    ```
+    
     
 
