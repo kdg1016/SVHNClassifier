@@ -98,3 +98,51 @@
 
 
 ## Usage
+
+1. Convert to TFRecords format
+
+
+    ```
+    $ python convert_to_tfrecords.py
+    ```
+    
+2. Train
+
+    ```
+    $ python train.py
+    ```
+    
+
+3. Evaluate
+
+    ```
+    $ python eval.py
+    ```
+    
+
+4. Visualize(if you need)
+
+    ```
+    $ tensorboard --logdir ./logs
+    ```
+    
+5. Try to make an inference
+
+    ```
+    $ python inference.py
+    (--path_to_image_file : test_images/test1.jpg,  --path_to_restore_checkpoint_file :./logs/train/latest.ckpt)
+    ```
+ 
+    ### Samples
+
+    | Training      | Test          |
+    |:-------------:|:-------------:|
+    | ![Train1](https://github.com/potterhsu/SVHNClassifier/blob/master/images/train1.png?raw=true) | ![Test1](https://github.com/potterhsu/SVHNClassifier/blob/master/images/test1.png?raw=true) |
+    | ![Train2](https://github.com/potterhsu/SVHNClassifier/blob/master/images/train2.png?raw=true) | ![Test2](https://github.com/potterhsu/SVHNClassifier/blob/master/images/test2.png?raw=true) |
+
+
+    ### Inference of outside image
+    
+    <img src="https://github.com/potterhsu/SVHNClassifier/blob/master/images/inference1.png?raw=true" width="250">
+
+
